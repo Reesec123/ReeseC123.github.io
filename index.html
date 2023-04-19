@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jeopardy Trainer</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>Jeopardy Trainer</h1>
+  <button id="start-game">Start Game</button>
+  <div id="game-screen" hidden>
+    <div class="container">
+      <div class="score-container">
+        <div class="score-display">
+          <span id="score">0</span>
+          <p>Points</p>
+        </div>
+        <div class="score-display">
+          <span id="correct-answers">0</span>
+          <p>Correct</p>
+        </div>
+        <div class="score-display">
+          <span id="incorrect-answers">0</span>
+          <p>Incorrect</p>
+        </div>
+      </div>
+      <div id="question"></div>
+      <input type="text" id="guess" placeholder="Your guess">
+      <button id="submit-guess">Submit Guess</button>
+      <div id="answer" hidden></div>
+      <button id="reveal-answer">Reveal Answer</button>
+      <button id="next-question">Next Question</button>
+    </div>
+  </div>
+  <p id="loading-message" hidden>Loading questions...</p>
+  <script src="script.js"></script>
+</body>
+</html>
