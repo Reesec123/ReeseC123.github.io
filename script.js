@@ -10,6 +10,21 @@ const scoreEl = document.getElementById("score");
 const guessInput = document.getElementById("guess");
 const submitGuessBtn = document.getElementById("submit-guess");
 
+const valueButtons = document.querySelectorAll('.value-button');
+for(let button of valueButtons) {
+  button.addEventListener('click', function() {
+    const value = this.value;
+    showQuestionByValue(value);
+  });
+}
+
+document.getElementById('random-value').addEventListener('click', function() {
+  const values = [200, 400, 600, 800, 1000, 400, 800, 1200, 1600, 2000];
+  const randomValue = values[Math.floor(Math.random() * values.length)];
+  showQuestionByValue(randomValue);
+});
+
+
 
 
 let questions = [];
@@ -20,14 +35,12 @@ let incorrectAnswers = 0;
 
 const loadingMessage = document.getElementById("loading-message");
 
-
 function initializeGame() {
     loadingMessage.hidden = false;
     fetch("questions.json")
         .then((response) => response.json())
         .then((data) => {
-            questions = data;
-            showRandomQuestion(); // Move this inside the promise chain
+            questions = data.filter(q => q.value);
             loadingMessage.hidden = true;
         });
 
@@ -37,14 +50,24 @@ function initializeGame() {
 }
 
 
-function showRandomQuestion() {
-    const randomIndex = Math.floor(Math.random() * questions.length);
-    currentQuestion = questions[randomIndex];
-    questionEl.textContent = `${currentQuestion.category} - ${currentQuestion.value}: ${currentQuestion.question}`;
-    answerEl.textContent = currentQuestion.answer;
-    answerEl.hidden = true;
-    revealAnswerBtn.disabled = false;
+function showQuestionByValue(value) {
+    const parsedValue = parseInt(value);
+    const filteredQuestions = questions.filter(q => parseValue(q.value) === parsedValue);
+  
+    if (filteredQuestions.length > 0) {
+        const randomIndex = Math.floor(Math.random() * filteredQuestions.length);
+        currentQuestion = filteredQuestions[randomIndex];
+        questionEl.textContent = `${currentQuestion.category} - ${currentQuestion.value}: ${currentQuestion.question}`;
+        answerEl.textContent = currentQuestion.answer;
+        answerEl.hidden = true;
+        revealAnswerBtn.disabled = false;
+    } else {
+        // Handle case where there are no questions for a particular value
+        console.log(`No questions found for value ${value}`);
+    }
 }
+
+
 
 function revealAnswer() {
     answerEl.hidden = false;
@@ -57,10 +80,11 @@ function revealAnswer() {
 }
 
 function nextQuestion() {
-    showRandomQuestion();
+    showQuestionByValue(parseValue(currentQuestion.value));
     guessInput.value = "";
     submitGuessBtn.disabled = false;
 }
+
 
 function updateAnswerCounts() {
     correctAnswersEl.textContent = correctAnswers;
@@ -96,8 +120,14 @@ function updateScore() {
 }
 
 function parseValue(value) {
-    return parseInt(value.replace("$", "").replace(",", ""));
+    if (value) {
+        return parseInt(value.replace("$", "").replace(",", ""));
+    } else {
+        // Return some default value (like 0) if value is null or undefined
+        return 0;
+    }
 }
+
 
 function areAnswersSimilar(answer1, answer2, threshold) {
     const words1 = answer1.split(/\s+/);
