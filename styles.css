@@ -51,3 +51,24 @@ button {
 .score-display {
   font-size: 1.5rem;
 }
+
+button {
+    cursor: pointer;
+    margin: 10px;
+    padding: 10px 20px; /* Add some padding */
+    border: none; /* Remove default border */
+    border-radius: 5px; /* Add some border radius */
+    background-color: #007bff; /* Change the background color */
+    color: white; /* Change the text color */
+    font-weight: bold; /* Make the text bold */
+    transition: background-color 0.3s ease; /* Add transition for smooth hover effect */
+}
+
+button:hover {
+    background-color: #0056b3; /* Change the background color on hover */
+}
+
+button:disabled {
+    background-color: #666; /* Change the background color of disabled buttons */
+    cursor: not-allowed; /* Change the cursor for disabled buttons */
+}
