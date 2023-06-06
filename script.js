@@ -12,6 +12,10 @@ const submitGuessBtn = document.getElementById("submit-guess");
 
 const valueButtons = document.querySelectorAll('.value-button');
 for(let button of valueButtons) {
+  button.addEventListener('touchstart', function() {
+    const value = this.value;
+    showQuestionByValue(value);
+  });
   button.addEventListener('click', function() {
     const value = this.value;
     showQuestionByValue(value);
@@ -23,6 +27,8 @@ document.getElementById('random-value').addEventListener('click', function() {
   const randomValue = values[Math.floor(Math.random() * values.length)];
   showQuestionByValue(randomValue);
 });
+
+
 
 
 
